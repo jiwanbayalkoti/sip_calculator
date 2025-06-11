@@ -27,7 +27,7 @@
                             @if (Route::has('login'))
                                 <div class="space-x-8 sm:-my-px sm:ml-10">
                                     @auth
-                                        <a href="{{ url('/dashboard') }}" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">Dashboard</a>
+                                        <a href="{{ route('dashboard') }}" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">Dashboard</a>
                                         <form method="POST" action="{{ route('logout') }}" class="inline">
                                             @csrf
                                             <button type="submit" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">

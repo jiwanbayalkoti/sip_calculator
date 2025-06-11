@@ -11,29 +11,24 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- Styles -->
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
         <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://unpkg.com/alpinejs" defer></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        
+        <!-- Custom Scripts -->
         <script>
-            // Set up CSRF token for AJAX requests
+            // Add CSRF token to all AJAX requests
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
-            tailwind.config = {
-                darkMode: 'class',
-                theme: {
-                    extend: {
-                        fontFamily: {
-                            sans: ['Figtree', 'sans-serif'],
-                        },
-                    },
-                },
-            }
         </script>
+        <script src="{{ asset('js/login-modal.js') }}" defer></script>
+
         <style>
             [x-cloak] { display: none !important; }
         </style>
@@ -57,6 +52,12 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <!-- Modals -->
+            @guest
+                @include('components.login-modal')
+                @include('components.register-modal')
+            @endguest
         </div>
     </body>
 </html>

@@ -6,18 +6,34 @@ use App\Models\SipCalculation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class SipCalculatorController extends Controller
 {
-    public function index()
+    /**
+     * Display the calculator dashboard.
+     */
+    public function index(): View
     {
         $history = [];
-        if (Auth::check()) {
-            $history = Auth::user()->sipCalculations()->latest()->take(5)->get();
+        $user = Auth::user();
+
+        if ($user) {
+            $history = $user->sipCalculations()
+                ->latest()
+                ->take(5)
+                ->get();
         }
-        return view('sip-calculator.index', compact('history'));
+
+        return view('dashboard', [
+            'history' => $history,
+            'isAuthenticated' => !is_null($user)
+        ]);
     }
 
+    /**
+     * Calculate SIP returns.
+     */
     public function calculate(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -58,8 +74,10 @@ class SipCalculatorController extends Controller
             'maturity_amount' => round($maturityAmount, 2),
             'total_investment' => round($totalInvestment, 2),
             'total_interest' => round($totalInterest, 2),
+            'calculated_at' => now()->toDateTimeString(),
         ];
 
+        // Save calculation for authenticated users
         if (Auth::check()) {
             Auth::user()->sipCalculations()->create($result);
         }
@@ -70,13 +88,30 @@ class SipCalculatorController extends Controller
         ]);
     }
 
+    /**
+     * Get calculation history for authenticated users.
+     */
     public function history()
     {
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $history = Auth::user()->sipCalculations()->latest()->get();
+        $history = Auth::user()->sipCalculations()
+            ->latest()
+            ->get()
+            ->map(function ($calculation) {
+                return [
+                    'monthly_investment' => $calculation->monthly_investment,
+                    'annual_return_rate' => $calculation->annual_return_rate,
+                    'investment_duration' => $calculation->investment_duration,
+                    'maturity_amount' => $calculation->maturity_amount,
+                    'total_investment' => $calculation->total_investment,
+                    'total_interest' => $calculation->total_interest,
+                    'calculated_at' => $calculation->created_at->diffForHumans(),
+                ];
+            });
+
         return response()->json([
             'status' => 'success',
             'history' => $history
