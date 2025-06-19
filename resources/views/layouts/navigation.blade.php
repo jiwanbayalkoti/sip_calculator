@@ -5,8 +5,8 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                        {{ config('app.name', 'Laravel') }}
+                    <a href="{{ route('dashboard') }}" class="flex items-center">
+                        <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name', 'SIP Calculator') }}" class="h-10 w-auto">
                     </a>
                 </div>
 

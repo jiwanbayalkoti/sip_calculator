@@ -108,7 +108,7 @@ class SipCalculatorController extends Controller
                     'maturity_amount' => $calculation->maturity_amount,
                     'total_investment' => $calculation->total_investment,
                     'total_interest' => $calculation->total_interest,
-                    'calculated_at' => $calculation->created_at->diffForHumans(),
+                    'created_at' => $calculation->created_at->toISOString(),
                 ];
             });
 

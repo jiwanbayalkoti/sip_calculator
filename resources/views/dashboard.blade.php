@@ -4,117 +4,289 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('SIP Calculator') }}
             </h2>
-           
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Calculator Form -->
-                        <div class="calculator-form">
-                            <form id="sipForm" class="space-y-4">
-                                <div>
-                                    <x-input-label for="monthly_investment" :value="__('Monthly Investment (₹)')" />
-                                    <x-text-input id="monthly_investment" type="number" name="monthly_investment" class="block mt-1 w-full" required />
-                                    <span class="text-red-500 text-sm error-monthly_investment"></span>
-                                </div>
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Hero Section -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                    Plan Your <span class="text-blue-600 dark:text-blue-400">Financial Future</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Calculate your SIP returns and discover how systematic investment can help you build wealth over time
+                </p>
+            </div>
 
-                                <div>
-                                    <x-input-label for="annual_return_rate" :value="__('Expected Annual Return Rate (%)')" />
-                                    <x-text-input id="annual_return_rate" type="number" step="0.01" name="annual_return_rate" class="block mt-1 w-full" required />
-                                    <span class="text-red-500 text-sm error-annual_return_rate"></span>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Calculator Form -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                        <!-- Form Header -->
+                        <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-white/20 rounded-lg p-2">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
                                 </div>
-
                                 <div>
-                                    <x-input-label for="investment_duration" :value="__('Investment Duration (Years)')" />
-                                    <x-text-input id="investment_duration" type="number" name="investment_duration" class="block mt-1 w-full" required />
-                                    <span class="text-red-500 text-sm error-investment_duration"></span>
+                                    <h2 class="text-2xl font-bold text-white">SIP Calculator</h2>
+                                    <p class="text-blue-100">Enter your investment details below</p>
                                 </div>
-
-                                <x-primary-button type="submit">
-                                    {{ __('Calculate') }}
-                                </x-primary-button>
-                            </form>
+                            </div>
                         </div>
 
-                        <!-- Results Display -->
-                        <div id="results" class="results-display hidden">
-                            <h3 class="text-lg font-semibold mb-4">Results</h3>
-                            <div class="space-y-3 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                                <div class="flex justify-between">
-                                    <span>Total Investment:</span>
-                                    <span class="font-semibold">₹<span id="total_investment">0</span></span>
+                        <!-- Form Content -->
+                        <div class="p-8">
+                            <form id="sipForm" class="space-y-6">
+                                <!-- Monthly Investment -->
+                                <div class="relative">
+                                    <label for="monthly_investment" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Monthly Investment Amount
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 dark:text-gray-400 text-lg font-medium">₹</span>
+                                        </div>
+                                        <input type="number" 
+                                               id="monthly_investment" 
+                                               name="monthly_investment" 
+                                               placeholder="10,000"
+                                               class="block w-full pl-8 pr-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all duration-200" 
+                                               required>
+                                    </div>
+                                    <span class="text-red-500 text-sm error-monthly_investment mt-1"></span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Recommended: ₹5,000 - ₹50,000 per month</p>
                                 </div>
-                                <div class="flex justify-between">
-                                    <span>Total Interest:</span>
-                                    <span class="font-semibold">₹<span id="total_interest">0</span></span>
+
+                                <!-- Annual Return Rate -->
+                                <div class="relative">
+                                    <label for="annual_return_rate" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Expected Annual Return Rate
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" 
+                                               step="0.01" 
+                                               id="annual_return_rate" 
+                                               name="annual_return_rate" 
+                                               placeholder="12.00"
+                                               class="block w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all duration-200" 
+                                               required>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 dark:text-gray-400 text-lg font-medium">%</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-red-500 text-sm error-annual_return_rate mt-1"></span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Typical range: 8% - 15% for equity funds</p>
                                 </div>
-                                <div class="flex justify-between">
-                                    <span>Maturity Amount:</span>
-                                    <span class="font-semibold">₹<span id="maturity_amount">0</span></span>
+
+                                <!-- Investment Duration -->
+                                <div class="relative">
+                                    <label for="investment_duration" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Investment Duration
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" 
+                                               id="investment_duration" 
+                                               name="investment_duration" 
+                                               placeholder="10"
+                                               class="block w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all duration-200" 
+                                               required>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 dark:text-gray-400 text-lg font-medium">years</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-red-500 text-sm error-investment_duration mt-1"></span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Longer duration = Higher potential returns</p>
                                 </div>
-                                
-                                <!-- Add canvas for the graph -->
-                                <div class="mt-4 h-64">
-                                    <canvas id="sipChart"></canvas>
+
+                                <!-- Calculate Button -->
+                                <button type="submit" 
+                                        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 shadow-lg hover:shadow-xl">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span>Calculate Returns</span>
+                                    </div>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Display -->
+                <div class="lg:col-span-1">
+                    <div id="results" class="results-display hidden">
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                            <!-- Results Header -->
+                            <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-white/20 rounded-lg p-2">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white">Your Results</h3>
+                                        <p class="text-green-100">Investment summary</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Results Content -->
+                            <div class="p-6 space-y-6">
+                                <!-- Total Investment -->
+                                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">Total Investment</p>
+                                            <p class="text-2xl font-bold text-gray-900 dark:text-white">₹<span id="total_investment">0</span></p>
+                                        </div>
+                                        <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-2">
+                                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Total Interest -->
+                                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">Total Interest Earned</p>
+                                            <p class="text-2xl font-bold text-green-600 dark:text-green-400">₹<span id="total_interest">0</span></p>
+                                        </div>
+                                        <div class="bg-green-100 dark:bg-green-900 rounded-lg p-2">
+                                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Maturity Amount -->
+                                <div class="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900 rounded-xl p-4 border-2 border-purple-200 dark:border-purple-700">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-purple-600 dark:text-purple-400 font-medium">Maturity Amount</p>
+                                            <p class="text-3xl font-bold text-purple-700 dark:text-purple-300">₹<span id="maturity_amount">0</span></p>
+                                        </div>
+                                        <div class="bg-purple-100 dark:bg-purple-800 rounded-lg p-2">
+                                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Investment Tips -->
+                                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-700">
+                                    <div class="flex items-start space-x-3">
+                                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div>
+                                            <p class="text-sm font-medium text-blue-800 dark:text-blue-200">Investment Tip</p>
+                                            <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">Start early and stay consistent. Even small amounts can grow significantly over time with compound interest.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chart Section -->
+                                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+                                    <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Investment Growth Chart</h4>
+                                    <div class="h-48">
+                                        <canvas id="sipChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- History Section -->
-                    <div class="mt-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-semibold">Recent Calculations</h3>
+            <!-- History Section -->
+            <div class="mt-12">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-white/20 rounded-lg p-2">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Recent Calculations</h3>
+                                <p class="text-gray-200">Your calculation history</p>
+                            </div>
                         </div>
+                    </div>
+                    <div class="p-6">
                         <div id="history" class="space-y-4">
                             @forelse($history as $index => $calculation)
-                                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-150" 
-                                         onclick="toggleGraph({{ $index }})">
-                                        <div>
-                                            <span class="block text-sm">Monthly Investment</span>
-                                            <span class="font-semibold">₹{{ number_format($calculation->monthly_investment, 2) }}</span>
-                                        </div>
-                                        <div>
-                                            <span class="block text-sm">Return Rate</span>
-                                            <span class="font-semibold">{{ $calculation->annual_return_rate }}%</span>
-                                        </div>
-                                        <div>
-                                            <span class="block text-sm">Duration</span>
-                                            <span class="font-semibold">{{ $calculation->investment_duration }} years</span>
-                                        </div>
-                                        <div>
-                                            <span class="block text-sm">Total Investment</span>
-                                            <span class="font-semibold">₹{{ number_format($calculation->total_investment, 2) }}</span>
-                                        </div>
-                                        <div>
-                                            <span class="block text-sm">Total Interest</span>
-                                            <span class="font-semibold">₹{{ number_format($calculation->total_interest, 2) }}</span>
-                                        </div>
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <span class="block text-sm">Maturity Amount</span>
-                                                <span class="font-semibold">₹{{ number_format($calculation->maturity_amount, 2) }}</span>
+                                <div class="bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+                                    <div class="p-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-2">
+                                                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-gray-500 dark:text-gray-400">Calculation</p>
+                                                    <p class="text-xs text-gray-400 dark:text-gray-500">{{ $calculation->created_at->format('M d, Y') }}</p>
+                                                </div>
                                             </div>
-                                            @auth
-                                                <svg id="chevron{{ $index }}" class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                                </svg>
-                                            @endauth
+                                            <div class="text-right">
+                                                <p class="text-lg font-bold text-purple-600 dark:text-purple-400">₹{{ number_format($calculation->maturity_amount, 2) }}</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Maturity Amount</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Monthly Investment</p>
+                                                <p class="text-lg font-semibold text-gray-900 dark:text-white">₹{{ number_format($calculation->monthly_investment, 2) }}</p>
+                                            </div>
+                                            <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Return Rate</p>
+                                                <p class="text-lg font-semibold text-green-600 dark:text-green-400">{{ $calculation->annual_return_rate }}%</p>
+                                            </div>
+                                            <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Duration</p>
+                                                <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $calculation->investment_duration }} years</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Investment</p>
+                                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">₹{{ number_format($calculation->total_investment, 2) }}</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Interest Earned</p>
+                                                    <p class="text-sm font-semibold text-green-600 dark:text-green-400">₹{{ number_format($calculation->total_interest, 2) }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    @auth
-                                        <div id="graphContainer{{ $index }}" class="mt-4 h-48 hidden transition-all duration-300 ease-in-out">
-                                            <canvas id="historyChart{{ $index }}"></canvas>
-                                        </div>
-                                    @endauth
                                 </div>
                             @empty
-                                <p class="text-gray-500 dark:text-gray-400">No calculations yet</p>
+                                <div class="text-center py-8">
+                                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-8">
+                                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <p class="text-gray-500 dark:text-gray-400">No calculations yet</p>
+                                        <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Start by calculating your first SIP</p>
+                                    </div>
+                                </div>
                             @endforelse
                         </div>
                     </div>
@@ -199,40 +371,34 @@
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        label += new Intl.NumberFormat('en-IN', {
-                                            style: 'currency',
-                                            currency: 'INR'
-                                        }).format(context.parsed.y);
-                                        return label;
+                                        return context.dataset.label + ': ₹' + new Intl.NumberFormat('en-IN').format(context.parsed.y);
                                     }
                                 }
                             }
                         },
                         scales: {
                             x: {
-                                grid: {
-                                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Year',
+                                    color: document.documentElement.classList.contains('dark') ? '#fff' : '#000'
                                 },
                                 ticks: {
                                     color: document.documentElement.classList.contains('dark') ? '#fff' : '#000'
                                 }
                             },
                             y: {
-                                grid: {
-                                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Amount (₹)',
+                                    color: document.documentElement.classList.contains('dark') ? '#fff' : '#000'
                                 },
                                 ticks: {
                                     color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
                                     callback: function(value) {
-                                        return new Intl.NumberFormat('en-IN', {
-                                            style: 'currency',
-                                            currency: 'INR',
-                                            maximumSignificantDigits: 3
-                                        }).format(value);
+                                        return '₹' + new Intl.NumberFormat('en-IN').format(value);
                                     }
                                 }
                             }
@@ -299,15 +465,7 @@
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        label += new Intl.NumberFormat('en-IN', {
-                                            style: 'currency',
-                                            currency: 'INR'
-                                        }).format(context.parsed.y);
-                                        return label;
+                                        return context.dataset.label + ': ₹' + new Intl.NumberFormat('en-IN').format(context.parsed.y);
                                     }
                                 }
                             }
@@ -331,11 +489,9 @@
                                 ticks: {
                                     color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
                                     callback: function(value) {
-                                        return new Intl.NumberFormat('en-IN', {
-                                            style: 'currency',
-                                            currency: 'INR',
-                                            maximumSignificantDigits: 3,
-                                            notation: 'compact'
+                                        return '₹' + new Intl.NumberFormat('en-IN', {
+                                            notation: 'compact',
+                                            maximumSignificantDigits: 3
                                         }).format(value);
                                     },
                                     font: {
@@ -348,81 +504,141 @@
                 });
             }
 
-            // Load history from localStorage for guest users
-            @guest
-                const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
-                displayHistory(history);
-            @endguest
+            function updateHistory() {
+                @auth
+                    // For authenticated users, load from server
+                    $.get('{{ route("sip.history") }}', function(response) {
+                        if (response.status === 'success') {
+                            displayHistory(response.history);
+                        }
+                    });
+                @else
+                    // For guests, load from localStorage
+                    const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
+                    displayHistory(history);
+                @endauth
+            }
 
-            function displayHistory(calculations) {
-                if (!Array.isArray(calculations) || calculations.length === 0) {
-                    $('#history').html('<p class="text-gray-500 dark:text-gray-400">No calculations yet</p>');
+            function displayHistory(history) {
+                if (!Array.isArray(history) || history.length === 0) {
+                    $('#history').html(`
+                        <div class="text-center py-8">
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-8">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                                <p class="text-gray-500 dark:text-gray-400">No calculations yet</p>
+                                <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Start by calculating your first SIP</p>
+                            </div>
+                        </div>
+                    `);
                     return;
                 }
 
-                const historyHtml = calculations.map((item, index) => {
-                    const baseHtml = `
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-150" 
-                                 onclick="toggleGraph(${index})">
-                                <div>
-                                    <span class="block text-sm">Monthly Investment</span>
-                                    <span class="font-semibold">₹${numberFormat(item.monthly_investment)}</span>
-                                </div>
-                                <div>
-                                    <span class="block text-sm">Return Rate</span>
-                                    <span class="font-semibold">${item.annual_return_rate}%</span>
-                                </div>
-                                <div>
-                                    <span class="block text-sm">Duration</span>
-                                    <span class="font-semibold">${item.investment_duration} years</span>
-                                </div>
-                                <div>
-                                    <span class="block text-sm">Total Investment</span>
-                                    <span class="font-semibold">₹${numberFormat(item.total_investment)}</span>
-                                </div>
-                                <div>
-                                    <span class="block text-sm">Total Interest</span>
-                                    <span class="font-semibold">₹${numberFormat(item.total_interest)}</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <span class="block text-sm">Maturity Amount</span>
-                                        <span class="font-semibold">₹${numberFormat(item.maturity_amount)}</span>
-                                    </div>
-                                    @auth
-                                        <svg id="chevron${index}" class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                const historyHtml = history.map((item, index) => `
+                    <div class="bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-2">
+                                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                         </svg>
-                                    @endauth
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Calculation</p>
+                                        <p class="text-xs text-gray-400 dark:text-gray-500">${new Date(item.created_at || item.calculated_at).toLocaleDateString()}</p>
+                                    </div>
                                 </div>
-                            </div>`;
+                                <div class="text-right">
+                                    <p class="text-lg font-bold text-purple-600 dark:text-purple-400">₹${numberFormat(item.maturity_amount)}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Maturity Amount</p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-150" 
+                                 onclick="toggleGraph(${index})">
+                                <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Monthly Investment</p>
+                                    <p class="text-lg font-semibold text-gray-900 dark:text-white">₹${numberFormat(item.monthly_investment)}</p>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Return Rate</p>
+                                    <p class="text-lg font-semibold text-green-600 dark:text-green-400">${item.annual_return_rate}%</p>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Duration</p>
+                                    <p class="text-lg font-semibold text-gray-900 dark:text-white">${item.investment_duration} years</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Investment</p>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">₹${numberFormat(item.total_investment)}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Interest Earned</p>
+                                        <p class="text-sm font-semibold text-green-600 dark:text-green-400">₹${numberFormat(item.total_interest)}</p>
+                                    </div>
+                                </div>
+                            </div>
 
-                    @auth
-                        return baseHtml + `
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <svg id="chevron${index}" class="w-4 h-4 text-gray-500 dark:text-gray-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400">Click to view chart</span>
+                                </div>
+                            </div>
+
                             <div id="graphContainer${index}" class="mt-4 h-48 hidden transition-all duration-300 ease-in-out">
                                 <canvas id="historyChart${index}"></canvas>
                             </div>
-                        </div>`;
-                    @else
-                        return baseHtml + '</div>';
-                    @endauth
-                }).join('');
+                        </div>
+                    </div>
+                `).join('');
                 
                 $('#history').html(historyHtml);
-
-                // Create charts for new history items
-                @auth
-                    calculations.forEach((item, index) => {
-                        createHistoryChart(`historyChart${index}`, item);
-                    });
-                @endauth
             }
+
+            // Function to toggle graph visibility
+            window.toggleGraph = function(index) {
+                const container = $(`#graphContainer${index}`);
+                const chevron = $(`#chevron${index}`);
+                
+                container.toggleClass('hidden');
+                chevron.toggleClass('rotate-180');
+
+                // Initialize chart if not already done
+                if (!initializedCharts.has(index) && !container.hasClass('hidden')) {
+                    @auth
+                        // For authenticated users, get data from server
+                        $.get('{{ route("sip.history") }}', function(response) {
+                            if (response.status === 'success' && response.history[index]) {
+                                createHistoryChart(`historyChart${index}`, response.history[index]);
+                                initializedCharts.add(index);
+                            }
+                        });
+                    @else
+                        // For guests, get data from localStorage
+                        const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
+                        if (history[index]) {
+                            createHistoryChart(`historyChart${index}`, history[index]);
+                            initializedCharts.add(index);
+                        }
+                    @endauth
+                }
+            };
 
             $('#sipForm').on('submit', function(e) {
                 e.preventDefault();
                 
+                // Clear previous errors
                 $('.text-red-500').text('');
+
                 const formData = new FormData(this);
                 
                 $.ajax({
@@ -443,21 +659,24 @@
                         $('#total_interest').text(numberFormat(data.result.total_interest));
                         $('#maturity_amount').text(numberFormat(data.result.maturity_amount));
 
-                        // Create or update the chart
+                        // Create chart
                         createSipChart(data.result);
 
                         @guest
+                            // Store in localStorage for guest users
                             const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
-                            history.unshift(data.result);
-                            localStorage.setItem('sipHistory', JSON.stringify(history.slice(0, 5)));
-                            displayHistory(history);
-                        @else
-                            $.get('{{ route("sip.history") }}', function(response) {
-                                if (response.status === 'success') {
-                                    displayHistory(response.history);
-                                }
+                            history.unshift({
+                                ...data.result,
+                                created_at: new Date().toISOString()
                             });
+                            localStorage.setItem('sipHistory', JSON.stringify(history.slice(0, 5)));
                         @endguest
+
+                        // Update history display without page refresh
+                        updateHistory();
+
+                        // Scroll to results
+                        $('#results')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
                     },
                     error: function(xhr) {
                         console.error('Error:', xhr);
@@ -469,27 +688,8 @@
                 return new Intl.NumberFormat('en-IN').format(number);
             }
 
-            // Function to toggle graph visibility
-            window.toggleGraph = function(index) {
-                const container = $(`#graphContainer${index}`);
-                const chevron = $(`#chevron${index}`);
-                
-                container.toggleClass('hidden');
-                chevron.toggleClass('rotate-180');
-
-                // Initialize chart if not already done
-                if (!initializedCharts.has(index) && !container.hasClass('hidden')) {
-                    @if(Auth::check())
-                        const calculation = @json($history);
-                        createHistoryChart(`historyChart${index}`, {
-                            monthly_investment: calculation[index].monthly_investment,
-                            annual_return_rate: calculation[index].annual_return_rate,
-                            investment_duration: calculation[index].investment_duration
-                        });
-                        initializedCharts.add(index);
-                    @endif
-                }
-            };
+            // Load initial history
+            updateHistory();
         });
     </script>
     @endpush
