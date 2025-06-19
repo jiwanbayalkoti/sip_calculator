@@ -20,4 +20,8 @@ Route::middleware('auth')->group(function () {
 Route::post('/sip-calculator/calculate', [SipCalculatorController::class, 'calculate'])->name('sip.calculate');
 Route::get('/sip-calculator/history', [SipCalculatorController::class, 'history'])->middleware('auth')->name('sip.history');
 
+// Google Login Routes
+Route::get('auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
+
 require __DIR__.'/auth.php';
