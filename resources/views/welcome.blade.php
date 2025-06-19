@@ -13,412 +13,270 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <!-- Scripts -->
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+        <!-- Tailwind CSS CDN -->
         <script src="https://cdn.tailwindcss.com"></script>
+        
+        <!-- Custom CSS -->
+        <style>
+            .bg-gradient-to-br {
+                background: linear-gradient(to bottom right, var(--tw-gradient-stops));
+            }
+            .bg-gradient-to-r {
+                background: linear-gradient(to right, var(--tw-gradient-stops));
+            }
+            .text-transparent {
+                color: transparent;
+            }
+            .bg-clip-text {
+                -webkit-background-clip: text;
+                background-clip: text;
+            }
+        </style>
     </head>
-    <body class="antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
             <!-- Navigation -->
-            <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+            <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
-                        <div class="flex">
-                            <div class="shrink-0 flex items-center">
-                                <a href="{{ route('dashboard') }}" class="flex items-center">
-                                    <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name', 'SIP Calculator') }}" class="h-10 w-auto">
-                                </a>
-                            </div>
-                        </div>
                         <div class="flex items-center">
-                            @if (Route::has('login'))
-                                <div class="space-x-8 sm:-my-px sm:ml-10">
-                                    @auth
-                                        <a href="{{ route('dashboard') }}" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">Dashboard</a>
-                                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
-                                                Logout
-                                            </button>
-                                        </form>
-                                    @else
-                                        <a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">Log in</a>
-                                        @if (Route::has('register'))
-                                            <a href="{{ route('register') }}" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">Register</a>
-                                        @endif
-                                    @endauth
-                                </div>
-                            @endif
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            @auth
+                                <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            @else
+                                <a href="{{ route('login') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                                <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">Register</a>
+                            @endauth
                         </div>
                     </div>
                 </div>
             </nav>
 
-            <!-- Advertisement Banner -->
-            <x-ad-banner />
-
-            <!-- Main Content -->
-            <main class="py-8">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- Hero Section -->
-                    <div class="text-center mb-12">
-                        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                            Plan Your <span class="text-blue-600 dark:text-blue-400">Financial Future</span>
+            <!-- Hero Section -->
+            <div class="relative overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+                    <div class="text-center">
+                        <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                            Smart Investment
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">Planning</span>
                         </h1>
-                        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                            Calculate your SIP returns and discover how systematic investment can help you build wealth over time
+                        <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                            Comprehensive SIP calculators, mutual fund analysis, and investment tools to help you make informed financial decisions and achieve your wealth goals.
                         </p>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <!-- Calculator Form -->
-                        <div class="lg:col-span-2">
-                            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-                                <!-- Form Header -->
-                                <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="bg-white/20 rounded-lg p-2">
-                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h2 class="text-2xl font-bold text-white">SIP Calculator</h2>
-                                            <p class="text-blue-100">Enter your investment details below</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Form Content -->
-                                <div class="p-8">
-                                    <form id="sipForm" class="space-y-6">
-                                        <!-- Monthly Investment -->
-                                        <div class="relative">
-                                            <label for="monthly_investment" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                                Monthly Investment Amount
-                                            </label>
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <span class="text-gray-500 dark:text-gray-400 text-lg font-medium">₹</span>
-                                                </div>
-                                                <input type="number" 
-                                                       id="monthly_investment" 
-                                                       name="monthly_investment" 
-                                                       placeholder="10,000"
-                                                       class="block w-full pl-8 pr-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all duration-200" 
-                                                       required>
-                                            </div>
-                                            <span class="text-red-500 text-sm error-monthly_investment mt-1"></span>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Recommended: ₹5,000 - ₹50,000 per month</p>
-                                        </div>
-
-                                        <!-- Annual Return Rate -->
-                                        <div class="relative">
-                                            <label for="annual_return_rate" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                                Expected Annual Return Rate
-                                            </label>
-                                            <div class="relative">
-                                                <input type="number" 
-                                                       step="0.01" 
-                                                       id="annual_return_rate" 
-                                                       name="annual_return_rate" 
-                                                       placeholder="12.00"
-                                                       class="block w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all duration-200" 
-                                                       required>
-                                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                                    <span class="text-gray-500 dark:text-gray-400 text-lg font-medium">%</span>
-                                                </div>
-                                            </div>
-                                            <span class="text-red-500 text-sm error-annual_return_rate mt-1"></span>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Typical range: 8% - 15% for equity funds</p>
-                                        </div>
-
-                                        <!-- Investment Duration -->
-                                        <div class="relative">
-                                            <label for="investment_duration" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                                Investment Duration
-                                            </label>
-                                            <div class="relative">
-                                                <input type="number" 
-                                                       id="investment_duration" 
-                                                       name="investment_duration" 
-                                                       placeholder="10"
-                                                       class="block w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all duration-200" 
-                                                       required>
-                                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                                    <span class="text-gray-500 dark:text-gray-400 text-lg font-medium">years</span>
-                                                </div>
-                                            </div>
-                                            <span class="text-red-500 text-sm error-investment_duration mt-1"></span>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Longer duration = Higher potential returns</p>
-                                        </div>
-
-                                        <!-- Calculate Button -->
-                                        <button type="submit" 
-                                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 shadow-lg hover:shadow-xl">
-                                            <div class="flex items-center justify-center space-x-2">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                                </svg>
-                                                <span>Calculate Returns</span>
-                                            </div>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Results Display -->
-                        <div class="lg:col-span-1">
-                            <div id="results" class="results-display hidden">
-                                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-                                    <!-- Results Header -->
-                                    <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-4">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="bg-white/20 rounded-lg p-2">
-                                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h3 class="text-xl font-bold text-white">Your Results</h3>
-                                                <p class="text-green-100">Investment summary</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Results Content -->
-                                    <div class="p-6 space-y-6">
-                                        <!-- Total Investment -->
-                                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                                            <div class="flex items-center justify-between">
-                                                <div>
-                                                    <p class="text-sm text-gray-600 dark:text-gray-400">Total Investment</p>
-                                                    <p class="text-2xl font-bold text-gray-900 dark:text-white">₹<span id="total_investment">0</span></p>
-                                                </div>
-                                                <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-2">
-                                                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Total Interest -->
-                                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                                            <div class="flex items-center justify-between">
-                                                <div>
-                                                    <p class="text-sm text-gray-600 dark:text-gray-400">Total Interest Earned</p>
-                                                    <p class="text-2xl font-bold text-green-600 dark:text-green-400">₹<span id="total_interest">0</span></p>
-                                                </div>
-                                                <div class="bg-green-100 dark:bg-green-900 rounded-lg p-2">
-                                                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Maturity Amount -->
-                                        <div class="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900 rounded-xl p-4 border-2 border-purple-200 dark:border-purple-700">
-                                            <div class="flex items-center justify-between">
-                                                <div>
-                                                    <p class="text-sm text-purple-600 dark:text-purple-400 font-medium">Maturity Amount</p>
-                                                    <p class="text-3xl font-bold text-purple-700 dark:text-purple-300">₹<span id="maturity_amount">0</span></p>
-                                                </div>
-                                                <div class="bg-purple-100 dark:bg-purple-800 rounded-lg p-2">
-                                                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Investment Tips -->
-                                        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-700">
-                                            <div class="flex items-start space-x-3">
-                                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                                <div>
-                                                    <p class="text-sm font-medium text-blue-800 dark:text-blue-200">Investment Tip</p>
-                                                    <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">Start early and stay consistent. Even small amounts can grow significantly over time with compound interest.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="mt-12">
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-                            <div class="bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="bg-white/20 rounded-lg p-2">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-bold text-white">Recent Calculations</h3>
-                                            <p class="text-gray-200">Your calculation history</p>
-                                        </div>
-                                    </div>
-                                    @guest
-                                        <div class="text-right">
-                                            <p class="text-sm text-gray-200">
-                                                <a href="{{ route('login') }}" class="text-blue-300 hover:text-blue-200 underline">Login</a>
-                                                to save permanently
-                                            </p>
-                                        </div>
-                                    @endguest
-                                </div>
-                            </div>
-                            <div class="p-6">
-                                <div id="history" class="space-y-4">
-                                    <!-- History items will be added here dynamically -->
-                                </div>
-                            </div>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="{{ route('sip-calculator') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                                Start Calculating
+                            </a>
+                            <a href="{{ route('investment-quiz') }}" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                                Take Investment Quiz
+                            </a>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
 
-        <script>
-            $(document).ready(function() {
-                // Initialize localStorage history if not exists
-                if (!localStorage.getItem('sipHistory')) {
-                    localStorage.setItem('sipHistory', JSON.stringify([]));
-                }
+            <!-- Features Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Investment Tools</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- SIP Calculator -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">SIP Calculator</h3>
+                        <p class="text-gray-600 mb-4">Calculate future value of systematic investment plans with detailed breakdowns.</p>
+                        <a href="{{ route('sip-calculator') }}" class="text-blue-600 hover:text-blue-700 font-medium">Try Now →</a>
+                    </div>
 
-                // Load history from localStorage or server
-                function loadHistory() {
-                    @auth
-                        // For authenticated users, load from server
-                        $.get('{{ route("sip.history") }}', function(response) {
-                            if (response.status === 'success') {
-                                displayHistory(response.history);
-                            }
-                        });
-                    @else
-                        // For guests, load from localStorage
-                        const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
-                        displayHistory(history);
-                    @endauth
-                }
+                    <!-- Lumpsum Calculator -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Lumpsum Calculator</h3>
+                        <p class="text-gray-600 mb-4">Calculate returns on one-time investments with compound interest analysis.</p>
+                        <a href="{{ route('lumpsum-calculator') }}" class="text-green-600 hover:text-green-700 font-medium">Try Now →</a>
+                    </div>
 
-                function displayHistory(history) {
-                    const historyHtml = history.map(item => `
-                        <div class="bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <!-- Goal-Based Calculator -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Goal-Based Calculator</h3>
+                        <p class="text-gray-600 mb-4">Find the monthly SIP needed to reach your financial goals.</p>
+                        <a href="{{ route('goal-based-calculator') }}" class="text-purple-600 hover:text-purple-700 font-medium">Try Now →</a>
+                    </div>
+
+                    <!-- Step-Up Calculator -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Step-Up Calculator</h3>
+                        <p class="text-gray-600 mb-4">Calculate returns on increasing SIP investments over time.</p>
+                        <a href="{{ route('step-up-calculator') }}" class="text-orange-600 hover:text-orange-700 font-medium">Try Now →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mutual Funds Section -->
+            <div class="bg-white py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Mutual Fund Analysis</h2>
+                        <p class="text-xl text-gray-600">Compare and analyze top-performing mutual funds across different categories.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Fund Rankings</h3>
+                            <p class="text-gray-600 mb-4">Discover top-performing funds based on returns, ratings, and performance metrics.</p>
+                            <a href="{{ route('mutual-funds.ranking') }}" class="text-blue-600 hover:text-blue-700 font-medium">View Rankings →</a>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Compare Funds</h3>
+                            <p class="text-gray-600 mb-4">Side-by-side comparison of expense ratios, returns, and fund details.</p>
+                            <a href="{{ route('mutual-funds.compare') }}" class="text-green-600 hover:text-green-700 font-medium">Compare Now →</a>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Browse Funds</h3>
+                            <p class="text-gray-600 mb-4">Explore thousands of mutual funds across equity, debt, and hybrid categories.</p>
+                            <a href="{{ route('mutual-funds.index') }}" class="text-purple-600 hover:text-purple-700 font-medium">Browse Funds →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Section -->
+            <div class="bg-gray-50 py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Investment Education</h2>
+                        <p class="text-xl text-gray-600">Learn about SIPs, mutual funds, and personal finance through our educational content.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-48 bg-gradient-to-br from-blue-400 to-blue-600"></div>
                             <div class="p-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-2">
-                                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Calculation</p>
-                                            <p class="text-xs text-gray-400 dark:text-gray-500">${new Date(item.created_at).toLocaleDateString()}</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-lg font-bold text-purple-600 dark:text-purple-400">₹${numberFormat(item.maturity_amount)}</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">Maturity Amount</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Monthly Investment</p>
-                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">₹${numberFormat(item.monthly_investment)}</p>
-                                    </div>
-                                    <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Return Rate</p>
-                                        <p class="text-lg font-semibold text-green-600 dark:text-green-400">${item.annual_return_rate}%</p>
-                                    </div>
-                                    <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-3">
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Duration</p>
-                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">${item.investment_duration} years</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Investment</p>
-                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">₹${numberFormat(item.total_investment)}</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Interest Earned</p>
-                                            <p class="text-sm font-semibold text-green-600 dark:text-green-400">₹${numberFormat(item.total_interest)}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">SIP Investment Guide</h3>
+                                <p class="text-gray-600 mb-4">Complete guide to systematic investment plans and their benefits.</p>
+                                <a href="{{ route('blog.index') }}" class="text-blue-600 hover:text-blue-700 font-medium">Read More →</a>
                             </div>
                         </div>
-                    `).join('');
-                    $('#history').html(historyHtml || '<div class="text-center py-8"><div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-8"><svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg><p class="text-gray-500 dark:text-gray-400">No calculations yet</p><p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Start by calculating your first SIP</p></div></div>');
-                }
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-48 bg-gradient-to-br from-green-400 to-green-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">Mutual Fund Basics</h3>
+                                <p class="text-gray-600 mb-4">Understanding different types of mutual funds and their characteristics.</p>
+                                <a href="{{ route('blog.index') }}" class="text-green-600 hover:text-green-700 font-medium">Read More →</a>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-48 bg-gradient-to-br from-purple-400 to-purple-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">Tax Planning</h3>
+                                <p class="text-gray-600 mb-4">Tax implications of mutual fund investments and optimization strategies.</p>
+                                <a href="{{ route('blog.index') }}" class="text-purple-600 hover:text-purple-700 font-medium">Read More →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <a href="{{ route('blog.index') }}" class="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                            View All Articles
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-                $('#sipForm').on('submit', function(e) {
-                    e.preventDefault();
-                    
-                    // Clear previous errors
-                    $('.text-red-500').text('');
+            <!-- CTA Section -->
+            <div class="bg-gradient-to-r from-blue-600 to-green-600 py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="text-3xl font-bold text-white mb-4">Ready to Start Your Investment Journey?</h2>
+                    <p class="text-xl text-blue-100 mb-8">Join thousands of investors who trust our tools for their financial planning.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                                Go to Dashboard
+                            </a>
+                        @else
+                            <a href="{{ route('register') }}" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                                Get Started Free
+                            </a>
+                            <a href="{{ route('login') }}" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                                Sign In
+                            </a>
+                        @endauth
+                    </div>
+                </div>
+            </div>
 
-                    const formData = new FormData(this);
-                    
-                    $.ajax({
-                        url: '{{ route("sip.calculate") }}',
-                        method: 'POST',
-                        data: Object.fromEntries(formData),
-                        success: function(data) {
-                            if (data.status === 'error') {
-                                Object.keys(data.errors).forEach(key => {
-                                    $(`.error-${key}`).text(data.errors[key][0]);
-                                });
-                                return;
-                            }
-
-                            // Display results
-                            $('#results').removeClass('hidden');
-                            $('#total_investment').text(numberFormat(data.result.total_investment));
-                            $('#total_interest').text(numberFormat(data.result.total_interest));
-                            $('#maturity_amount').text(numberFormat(data.result.maturity_amount));
-
-                            @guest
-                                // Store in localStorage for guest users
-                                const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
-                                history.unshift({
-                                    ...data.result,
-                                    created_at: new Date().toISOString()
-                                });
-                                localStorage.setItem('sipHistory', JSON.stringify(history.slice(0, 5)));
-                            @endguest
-
-                            // Reload history
-                            loadHistory();
-                        },
-                        error: function(xhr) {
-                            console.error('Error:', xhr);
-                        }
-                    });
-                });
-
-                function numberFormat(number) {
-                    return new Intl.NumberFormat('en-IN').format(number);
-                }
-
-                // Load history on page load
-                loadHistory();
-            });
-        </script>
+            <!-- Footer -->
+            <footer class="bg-gray-900 text-white py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div>
+                            <x-application-logo class="block h-8 w-auto fill-current text-white mb-4" />
+                            <p class="text-gray-400">Comprehensive investment tools and calculators for smart financial planning.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Calculators</h3>
+                            <ul class="space-y-2 text-gray-400">
+                                <li><a href="{{ route('sip-calculator') }}" class="hover:text-white">SIP Calculator</a></li>
+                                <li><a href="{{ route('lumpsum-calculator') }}" class="hover:text-white">Lumpsum Calculator</a></li>
+                                <li><a href="{{ route('goal-based-calculator') }}" class="hover:text-white">Goal-Based Calculator</a></li>
+                                <li><a href="{{ route('step-up-calculator') }}" class="hover:text-white">Step-Up Calculator</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                            <ul class="space-y-2 text-gray-400">
+                                <li><a href="{{ route('blog.index') }}" class="hover:text-white">Blog</a></li>
+                                <li><a href="{{ route('mutual-funds.index') }}" class="hover:text-white">Mutual Funds</a></li>
+                                <li><a href="{{ route('glossary') }}" class="hover:text-white">Glossary</a></li>
+                                <li><a href="{{ route('investment-quiz') }}" class="hover:text-white">Investment Quiz</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                            <ul class="space-y-2 text-gray-400">
+                                <li><a href="{{ route('privacy-policy') }}" class="hover:text-white">Privacy Policy</a></li>
+                                <li><a href="{{ route('terms-of-service') }}" class="hover:text-white">Terms of Service</a></li>
+                                <li><a href="{{ route('contact') }}" class="hover:text-white">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                        <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </body>
 </html>

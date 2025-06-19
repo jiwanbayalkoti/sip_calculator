@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'SIP Calculator') }}</title>
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Favicon -->
         <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
@@ -15,11 +15,30 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Styles -->
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        
+        <!-- jQuery for AJAX -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        
+        <!-- Custom CSS -->
+        <style>
+            .bg-gradient-to-br {
+                background: linear-gradient(to bottom right, var(--tw-gradient-stops));
+            }
+            .bg-gradient-to-r {
+                background: linear-gradient(to right, var(--tw-gradient-stops));
+            }
+            .text-transparent {
+                color: transparent;
+            }
+            .bg-clip-text {
+                -webkit-background-clip: text;
+                background-clip: text;
+            }
+        </style>
 
         <!-- Scripts -->
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         
         <!-- Custom Scripts -->
